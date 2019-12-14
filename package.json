@@ -1,0 +1,27 @@
+{
+  "name": "snakesnakesnake",
+  "version": "1.0.0",
+  "description": "Snake game in 3d on a cube",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/grgdkfa/snakesnakesnake.git"
+  },
+  "keywords": [
+    "snake",
+    "game",
+    "webgl"
+  ],
+  "author": "grgdkfa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/grgdkfa/snakesnakesnake/issues"
+  },
+  "homepage": "https://github.com/grgdkfa/snakesnakesnake#readme",
+  "dependencies": {
+    "three": "^0.111.0"
+  }
+}
