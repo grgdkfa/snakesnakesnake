@@ -4,7 +4,9 @@
   "description": "Snake game in 3d on a cube",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "parcel watch index.html",
+    "serve": "parcel serve index.html"
   },
   "repository": {
     "type": "git",
