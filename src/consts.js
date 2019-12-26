@@ -2,10 +2,10 @@
 import * as THREE from 'three';
 
 export const CELL = {
-    EMPTY: 0,
-    BODY: 1,
-    HEAD: 2,
-    FOOD: 3
+    EMPTY: Symbol('empty'),
+    BODY: Symbol('body'),
+    HEAD: Symbol('head'),
+    FOOD: Symbol('food')
 };
 
 export const DIRS = [
@@ -16,3 +16,5 @@ export const DIRS = [
     new THREE.Vector3(0, 0, 1),
     new THREE.Vector3(0, 0, -1),
 ];
+
+export const EPS = 1e-7;

@@ -1,5 +1,6 @@
 
 import * as THREE from 'three';
+import Level from './level';
 
 class Game {
 	constructor() {
@@ -10,7 +11,9 @@ class Game {
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
 		document.body.appendChild( this.renderer.domElement );
 
-		this.initExample();
+		this.level = new Level();
+
+		this.initLevel();
 
 		this.animate();
 	}
@@ -24,12 +27,23 @@ class Game {
 		this.camera.position.z = 5;
 	}
 
+	initLevel() {
+		this.level.buildCube(3);
+		this.scene.add(this.level.group);
+
+		this.light = new THREE.DirectionalLight(0xffffff, 1);
+		this.light.position.z = 8;
+		this.scene.add(this.light);
+
+		this.camera.position.z = 8;
+	}
+
 	animate() {
 		requestAnimationFrame(() => { this.animate() });
 		this.renderer.render(this.scene, this.camera);
 
-		this.cube.rotation.x += 0.01;
-		this.cube.rotation.z += 0.02;
+		this.level.group.rotation.x += 0.005;
+		this.level.group.rotation.z += 0.005;
 	}
 }
 
