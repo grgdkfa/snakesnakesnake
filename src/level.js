@@ -2,7 +2,7 @@
 import * as THREE from 'three';
 import Cell from './cell';
 import Grid from './grid';
-import { DIRS, EPS } from './consts';
+import { DIRS, EPS, CELL } from './consts';
 
 class Level {
 	constructor(type) {
@@ -16,8 +16,17 @@ class Level {
 		const grid = new Grid(size);
 
 		grid.data.fill(1);
+		grid.data[0] = 0;
+		grid.data[size - 1] = 0;
+		grid.data[size * size * size - 1] = 0;
 
 		this.makeLevel(grid);
+
+		const randFrom = (a) => {
+			return a[Math.random() * a.length | 0];
+		}
+
+		this.cells[randFrom(Object.keys(this.cells))].setState(CELL.HEAD);
 	}
 
 	addCell(x, y, z, d) {
@@ -45,7 +54,7 @@ class Level {
 			if(!solid) return;
 
 			for(let d=0; d<DIRS.length; d++) {
-				if(grid.getD(x, y, z, d)) {
+				if(!grid.getD(x, y, z, d)) {
 					this.addCell(x, y, z, d);
 				}
 			}

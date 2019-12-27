@@ -28,7 +28,7 @@ class Game {
 	}
 
 	initLevel() {
-		this.level.buildCube(3);
+		this.level.buildCube(3,4,5);
 		this.scene.add(this.level.group);
 
 		this.light = new THREE.DirectionalLight(0xffffff, 1);

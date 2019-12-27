@@ -2,12 +2,12 @@
 import * as THREE from 'three';
 import {CELL, DIRS} from './consts';
 
-const baseGeometry = new THREE.PlaneGeometry(0.9, 0.9);
+const baseGeometry = new THREE.PlaneGeometry(1, 1);
 
 const materials = {
-	EMPTY: new THREE.MeshLambertMaterial({ color: 0xaaaaaa, wireframe: true }),
+	EMPTY: new THREE.MeshLambertMaterial({ color: 0xaaaaaa }),
     BODY: new THREE.MeshBasicMaterial({ color: 0x33dd33 }),
-    HEAD: new THREE.MeshBasicMaterial({ color: 0xdd3333 }),
+    HEAD: new THREE.MeshLambertMaterial({ color: 0xdd3333 }),
     FOOD: new THREE.MeshBasicMaterial({ color: 0xdddd33 })
 };
 
@@ -35,8 +35,13 @@ class Cell {
 		this.mesh.position.copy(position);
 		this.mesh.position.add(HALFWAY);
 		this.up.copy(DIRS[upDirection]);
-		this.mesh.position.addScaledVector(this.up, -0.5);
-		this.mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, -1), DIRS[upDirection]); 
+		this.mesh.position.addScaledVector(this.up, 0.5);
+		this.mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 0, 1), DIRS[upDirection]); 
+	}
+
+	setState(state) {
+		this.state = state;
+		this.mesh.material = materials[state];
 	}
 }
 
