@@ -17,15 +17,10 @@ class Level {
 		const grid = new Grid(size);
 
 		grid.data.fill(1);
-		grid.data[0] = 0;
-		grid.data[size - 1] = 0;
-		grid.data[size * size * size - 1] = 0;
 
 		this.makeLevel(grid);
 
-		debugger;
-
-		const c = this.cells[randFrom(Object.keys(this.cells))];
+		const c = randFrom(this.cells);
 		c.setState(CELL.HEAD);
 		c.neighbors.forEach(x => {
 			if(!x) return;
@@ -46,31 +41,18 @@ class Level {
 			// return the *up* vector for the next cell in given direction, since the cell is defined by position and up vector
 
 			// same plane
-			if(eq(p, 0)) {
+			if(p == 0) {
 				return DIRS.findIndex(x => x.equals(up));
 			}
 
 			// forward and up
 			if(p > 0) {
-				return DIRS.findIndex( x => eq(x.dot(up), 0) && x.dot(forward) < -EPS );
+				return DIRS.findIndex( x => x.dot(up) == 0 && x.dot(forward) < -EPS );
 			}
 
 			// forward and down
 			if(p < 0) {
-				return DIRS.findIndex( x => eq(x.dot(up), 0) && x.dot(forward) > EPS );
-			}
-		}
-
-		const checkCell = (cell, dir, depth) => {
-			const p = new THREE.Vector3();
-			const f = new THREE.Vector3();
-			f.copy(dir);
-			f.addScaledVector(cell.up, depth);
-			p.copy(cell.index);
-			p.add(f);
-			if(grid.get(p)) {
-				const targetDir = getDir(cell.up, f);
-				cell.neighbors[d] = this.cells[`${p.x}-${p.y}-${p.z}-${targetDir}`];
+				return DIRS.findIndex( x => x.dot(up) == 0 && x.dot(forward) > EPS );
 			}
 		}
 
@@ -84,21 +66,40 @@ class Level {
 			}
 		});
 
+		// tie every cell together (todo: make a more elegant way)
 		for(let i in this.cells) {
 			const cell = this.cells[i];
 
 			for(let d=0; d<DIRS.length; d++) {
 				const dir = DIRS[d];
-				if(!eq(cell.up.dot(dir), 0)) continue;
+				if(cell.up.dot(dir) != 0) continue;
 				
-				// up
-				checkCell(cell, dir, 1);
+				const p = new THREE.Vector3();
+				const f = new THREE.Vector3();
 
-				// down
-				checkCell(cell, dir, -1);
+				// up (forward and up)
+				f.copy(dir);
+				f.add(cell.up);
+				p.copy(cell.index);
+				p.add(f);
+				if(grid.get(p)) {
+					const targetDir = getDir(cell.up, f);
+					cell.neighbors[d] = this.cells[`${p.x}-${p.y}-${p.z}-${targetDir}`];
+				}
 
-				// forward
-				checkCell(cell, dir, 0);
+				f.copy(dir);
+				p.copy(cell.index);
+				p.add(f);
+				if(grid.get(p)) {
+					// forward
+					const targetDir = getDir(cell.up, f);
+					cell.neighbors[d] = this.cells[`${p.x}-${p.y}-${p.z}-${targetDir}`];
+				} else {
+					// down (same cube, different direction)
+					const targetDir = getDir(cell.up, f.addScaledVector(cell.up, -1));
+					p.copy(cell.index);
+					cell.neighbors[d] = this.cells[`${p.x}-${p.y}-${p.z}-${targetDir}`];
+				}
 			}
 		}
 

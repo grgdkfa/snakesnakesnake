@@ -42,8 +42,8 @@ class Game {
 		requestAnimationFrame(() => { this.animate() });
 		this.renderer.render(this.scene, this.camera);
 
-		this.level.group.rotation.x += 0.005;
-		this.level.group.rotation.z += 0.005;
+		this.level.group.rotation.x -= 0.005;
+		this.level.group.rotation.z += 0.007;
 	}
 }
 
