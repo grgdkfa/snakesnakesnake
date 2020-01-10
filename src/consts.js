@@ -10,10 +10,10 @@ export const CELL = {
 
 export const DIRS = [
     new THREE.Vector3(1, 0, 0),
-    new THREE.Vector3(-1, 0, 0),
     new THREE.Vector3(0, 1, 0),
-    new THREE.Vector3(0, -1, 0),
     new THREE.Vector3(0, 0, 1),
+    new THREE.Vector3(-1, 0, 0),
+    new THREE.Vector3(0, -1, 0),
     new THREE.Vector3(0, 0, -1),
 ];
 

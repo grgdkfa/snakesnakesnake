@@ -7,7 +7,7 @@ const baseGeometry = new THREE.PlaneGeometry(1, 1);
 const materials = {
 	EMPTY: new THREE.MeshLambertMaterial({ color: 0xaaaaaa }),
     BODY: new THREE.MeshBasicMaterial({ color: 0x33dd33 }),
-    HEAD: new THREE.MeshLambertMaterial({ color: 0xdd3333 }),
+    HEAD: new THREE.MeshBasicMaterial({ color: 0xdd3333 }),
     FOOD: new THREE.MeshBasicMaterial({ color: 0xdddd33 })
 };
 

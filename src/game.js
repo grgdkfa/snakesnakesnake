@@ -1,6 +1,7 @@
 
 import * as THREE from 'three';
 import Level from './level';
+import Snake from './snake';
 
 class Game {
 	constructor() {
@@ -12,6 +13,7 @@ class Game {
 		document.body.appendChild( this.renderer.domElement );
 
 		this.level = new Level();
+		this.snake = new Snake();
 
 		this.initLevel();
 
@@ -36,14 +38,28 @@ class Game {
 		this.scene.add(this.light);
 
 		this.camera.position.z = 8;
+
+		this.snake.init(this.level.randCell());
 	}
 
 	animate() {
 		requestAnimationFrame(() => { this.animate() });
 		this.renderer.render(this.scene, this.camera);
 
-		this.level.group.rotation.x -= 0.005;
-		this.level.group.rotation.z += 0.007;
+		/*this.level.group.rotation.x -= 0.005;
+		this.level.group.rotation.z += 0.007;*/
+		this.alignCamera(0.05);
+	}
+
+	alignCamera(dt) {
+		const target = new THREE.Vector3();
+		//this.snake.head.mesh.getWorldPosition(target);
+		target.copy(this.snake.head.mesh.position);
+		target.normalize();
+		const q1 = new THREE.Quaternion();
+		q1.setFromUnitVectors(target, new THREE.Vector3(0, 0, 1));
+		const up = this.level.group.localToWorld(this.snake.direction);
+		this.level.group.quaternion.slerp(q1, dt);
 	}
 }
 

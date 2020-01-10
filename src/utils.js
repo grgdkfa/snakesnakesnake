@@ -1,9 +1,9 @@
-import EPS from './consts';
+import {EPS, DIRS} from './consts';
 
 
 export function randFrom(something) {
     if(Array.isArray(something)) {
-        return array[Math.random() * array.length | 0];
+        return something[Math.random() * something.length | 0];
     }
     const keys = Object.keys(something);
     return something[keys[Math.random() * keys.length | 0]];
@@ -11,4 +11,8 @@ export function randFrom(something) {
 
 export function eq(a, b) {
     return Math.abs(a - b) < EPS;
+}
+
+export function dirIndex(v) {
+    return DIRS.findIndex(x => x.equals(v));
 }

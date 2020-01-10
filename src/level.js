@@ -20,12 +20,16 @@ class Level {
 
 		this.makeLevel(grid);
 
-		const c = randFrom(this.cells);
+		/*const c = randFrom(this.cells);
 		c.setState(CELL.HEAD);
 		c.neighbors.forEach(x => {
 			if(!x) return;
 			x.setState(CELL.BODY)
-		});
+		});*/
+	}
+
+	randCell() {
+		return randFrom(this.cells);
 	}
 
 	addCell(x, y, z, d) {
