@@ -40,6 +40,10 @@ class Game {
 		this.camera.position.z = 8;
 
 		this.snake.init(this.level.randCell());
+
+		setInterval(() => {
+			this.snake.step();
+		}, 800);
 	}
 
 	animate() {
@@ -53,12 +57,10 @@ class Game {
 
 	alignCamera(dt) {
 		const target = new THREE.Vector3();
-		//this.snake.head.mesh.getWorldPosition(target);
 		target.copy(this.snake.head.mesh.position);
 		target.normalize();
 		const q1 = new THREE.Quaternion();
 		q1.setFromUnitVectors(target, new THREE.Vector3(0, 0, 1));
-		const up = this.level.group.localToWorld(this.snake.direction);
 		this.level.group.quaternion.slerp(q1, dt);
 	}
 }

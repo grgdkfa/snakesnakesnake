@@ -34,10 +34,21 @@ class Snake {
     step() {
         if(this.body.length) {
             this.body[this.body.length - 1].setState(CELL.EMPTY);
+            for(let i = this.body.length - 1; i > 0; i--) {
+                this.body[i] = this.body[i - 1];
+            }
+            this.body[0] = this.head;
+            this.body[0].setState(CELL.BODY);
+        } else {
+            this.head.setState(CELL.EMPTY);
         }
         const dir = dirIndex(this.direction);
-        this.head.setState(CELL.BODY);
-        this.head = this.head.neighbors[dir];
+        const next = this.head.neighbors[dir];
+        const a = new THREE.Vector3();
+        a.subVectors(next.mesh.position, this.head.mesh.position);
+        
+        this.direction = next.findDir(a);
+        this.head = next;
         this.head.setState(CELL.HEAD);
     }
 }
