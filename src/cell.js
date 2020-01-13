@@ -43,6 +43,23 @@ class Cell {
 		this.state = state;
 		this.mesh.material = materials[state];
 	}
+
+	findDir(v) {
+		let max = 0;
+		let dir = new THREE.Vector3();
+		for(let i=0; i<this.neighbors.length; i++) {
+			if(!this.neighbors[i]) {
+				continue;
+			}
+
+			const p = DIRS[i].dot(v);
+			if(p > max) {
+				max = p;
+				dir.copy(DIRS[i]);
+			}
+		}
+		return dir;
+	}
 }
 
 export default Cell;

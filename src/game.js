@@ -17,7 +17,17 @@ class Game {
 
 		this.initLevel();
 
-		this.animate();
+		document.addEventListener('keydown', (event) => {
+			console.log(event);
+			if(event.key == 'ArrowRight') {
+				this.snake.turn(1);
+			}
+			if(event.key == 'ArrowLeft') {
+				this.snake.turn(-1);
+			}
+		});
+
+		this.start();
 	}
 
 	initExample() {
@@ -41,27 +51,35 @@ class Game {
 
 		this.snake.init(this.level.randCell());
 
+		
+	}
+
+	start() {
+		this.animate();
+
 		setInterval(() => {
 			this.snake.step();
-		}, 800);
+		}, this.snake.speed);
 	}
 
 	animate() {
 		requestAnimationFrame(() => { this.animate() });
 		this.renderer.render(this.scene, this.camera);
 
-		/*this.level.group.rotation.x -= 0.005;
-		this.level.group.rotation.z += 0.007;*/
 		this.alignCamera(0.05);
 	}
 
 	alignCamera(dt) {
+		const m = new THREE.Matrix4();
 		const target = new THREE.Vector3();
 		target.copy(this.snake.head.mesh.position);
 		target.normalize();
-		const q1 = new THREE.Quaternion();
-		q1.setFromUnitVectors(target, new THREE.Vector3(0, 0, 1));
-		this.level.group.quaternion.slerp(q1, dt);
+		target.multiplyScalar(8);
+		m.lookAt(target, new THREE.Vector3(0, 0, 0), this.snake.direction);
+		m.getInverse(m);
+		const q = new THREE.Quaternion();
+		q.setFromRotationMatrix(m);
+		this.level.group.quaternion.slerp(q, dt);
 	}
 }
 

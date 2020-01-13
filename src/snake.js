@@ -8,6 +8,8 @@ class Snake {
         if(head) {
             this.init(head);
         }
+
+        this.speed = 800; // ms
     }
 
     init(head) {
@@ -15,20 +17,28 @@ class Snake {
         this.body = [];
 
         const dir = randFrom(head.neighbors.map((x, i) => x === null ? -1 : i).filter(x => x > -1));
-        this.direction = DIRS[dir];
+        this.direction = new THREE.Vector3();
+        this.direction.copy(DIRS[dir]);
         const opposite = (dir + 3) % 6;
         this.body.push(head.neighbors[opposite]);
 
         this.head.setState(CELL.HEAD);
         this.body.forEach(x => x.setState(CELL.BODY));
+
+        this.turned = false;
     }
 
     // 1: right, -1: left
     turn(direction) {
+        if(this.turned) {
+            return;
+        }
+        this.turned = true;
         this.direction.cross(this.head.up);
         if(direction < 0) {
             this.direction.negate();
         }
+        this.direction.round();
     }
 
     step() {
@@ -47,9 +57,11 @@ class Snake {
         const a = new THREE.Vector3();
         a.subVectors(next.mesh.position, this.head.mesh.position);
         
-        this.direction = next.findDir(a);
+        this.direction.copy(next.findDir(a));
         this.head = next;
         this.head.setState(CELL.HEAD);
+
+        this.turned = false;
     }
 }
 
