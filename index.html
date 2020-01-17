@@ -10,9 +10,53 @@
 			margin: 0;
 			overflow: hidden;
 		}
+
+		.dir-button {
+			position: fixed;
+			bottom: 0;
+			width: 45%;
+			height: 70%;
+			background: rgba(255,255,255,0.1);
+			z-index: 9000;
+			transition: opacity 0.5s;
+		}
+
+		.dir-button::after {
+			position: absolute;
+			font-size: 48px;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			color: white;
+		}
+
+		.dir-button.left {
+			left: 0;
+			border-radius: 0 40px 0 0;
+		}
+
+		.dir-button.left::after {
+			content: '◀';
+		}
+
+		.dir-button.right {
+			right: 0;
+			border-radius: 40px 0 0 0;
+		}
+
+		.dir-button.right::after {
+			content: '▶';
+		}
+
+		.dir-button.transparent {
+			opacity: 0;
+		}
 	</style>
 </head>
 <body>
+	<div class="dir-button left"></div>
+	<div class="dir-button right"></div>
+
 	<script src="./src/index.js"></script>
 </body>
 </html>

@@ -60,6 +60,15 @@ class Cell {
 		}
 		return dir;
 	}
+
+	hasNear(type) {
+		for(let i=0; i<this.neighbors.length; i++) {
+			if(this.neighbors[i] && this.neighbors[i].state == type) {
+				return true;
+			}
+		}
+		return false;
+	}
 }
 
 export default Cell;

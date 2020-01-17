@@ -2,6 +2,8 @@
 import * as THREE from 'three';
 import Level from './level';
 import Snake from './snake';
+import GUI from './gui';
+import * as bus from './bus';
 
 class Game {
 	constructor() {
@@ -12,19 +14,17 @@ class Game {
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
 		document.body.appendChild( this.renderer.domElement );
 
+		this.gui = new GUI();
+
 		this.level = new Level();
 		this.snake = new Snake();
 
 		this.initLevel();
 
-		document.addEventListener('keydown', (event) => {
-			console.log(event);
-			if(event.key == 'ArrowRight') {
-				this.snake.turn(1);
-			}
-			if(event.key == 'ArrowLeft') {
-				this.snake.turn(-1);
-			}
+		this.animate();
+
+		bus.listen('start-game', () => {
+			this.start();
 		});
 
 		this.start();
@@ -40,7 +40,7 @@ class Game {
 	}
 
 	initLevel() {
-		this.level.buildCube(3,4,5);
+		this.level.buildCube(5);
 		this.scene.add(this.level.group);
 
 		this.light = new THREE.DirectionalLight(0xffffff, 1);
@@ -50,23 +50,22 @@ class Game {
 		this.camera.position.z = 8;
 
 		this.snake.init(this.level.randCell());
-
-		
 	}
 
 	start() {
-		this.animate();
-
-		setInterval(() => {
-			this.snake.step();
-		}, this.snake.speed);
+		this.level.spawnFood();
+		bus.listen('ate-food', () => {
+			this.level.spawnFood();
+		});
+		this.snake.run();
 	}
 
 	animate() {
 		requestAnimationFrame(() => { this.animate() });
 		this.renderer.render(this.scene, this.camera);
 
-		this.alignCamera(0.05);
+		// eyeballed formula
+		this.alignCamera(40 / this.snake.speed);
 	}
 
 	alignCamera(dt) {

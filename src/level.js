@@ -19,17 +19,21 @@ class Level {
 		grid.data.fill(1);
 
 		this.makeLevel(grid);
-
-		/*const c = randFrom(this.cells);
-		c.setState(CELL.HEAD);
-		c.neighbors.forEach(x => {
-			if(!x) return;
-			x.setState(CELL.BODY)
-		});*/
 	}
 
 	randCell() {
 		return randFrom(this.cells);
+	}
+
+	spawnFood() {
+		const empty = [];
+		for(let i in this.cells) {
+			const c = this.cells[i];
+			if(c.state == CELL.EMPTY && !c.hasNear(CELL.HEAD))
+				empty.push(c);
+		}
+		const cell = randFrom(empty);
+		cell.setState(CELL.FOOD);
 	}
 
 	addCell(x, y, z, d) {
