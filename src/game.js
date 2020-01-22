@@ -5,9 +5,12 @@ import Snake from './snake';
 import GUI from './gui';
 import * as bus from './bus';
 
+import CAMERA_FACTOR from './consts';
+
 class Game {
 	constructor() {
 		this.scene = new THREE.Scene();
+		this.scene.background = new THREE.Color( 0x343434 );
 		this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight);
 
 		this.renderer = new THREE.WebGLRenderer();
@@ -21,33 +24,23 @@ class Game {
 
 		this.initLevel();
 
-		this.animate();
-
 		bus.listen('start-game', () => {
 			this.start();
 		});
 
-		this.start();
-	}
-
-	initExample() {
-		const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-		const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-		this.cube = new THREE.Mesh( geometry, material );
-		this.scene.add( this.cube );
-
-		this.camera.position.z = 5;
+		this.animate();
 	}
 
 	initLevel() {
-		this.level.buildCube(5);
+		const size = 3;
+		this.level.buildCube(size);
 		this.scene.add(this.level.group);
 
 		this.light = new THREE.DirectionalLight(0xffffff, 1);
-		this.light.position.z = 8;
+		this.light.position.z = 1;
 		this.scene.add(this.light);
 
-		this.camera.position.z = 8;
+		this.camera.position.z = size * CAMERA_FACTOR;
 
 		this.snake.init(this.level.randCell());
 	}
@@ -73,7 +66,7 @@ class Game {
 		const target = new THREE.Vector3();
 		target.copy(this.snake.head.mesh.position);
 		target.normalize();
-		target.multiplyScalar(8);
+		target.multiplyScalar(this.level.size * CAMERA_FACTOR);
 		m.lookAt(target, new THREE.Vector3(0, 0, 0), this.snake.direction);
 		m.getInverse(m);
 		const q = new THREE.Quaternion();

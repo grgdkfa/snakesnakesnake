@@ -18,3 +18,5 @@ export const DIRS = [
 ];
 
 export const EPS = 1e-7;
+
+export const CAMERA_FACTOR = 1.6;

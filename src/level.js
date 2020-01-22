@@ -14,6 +14,7 @@ class Level {
 	}
 
 	buildCube(size) {
+		this.size = size;
 		const grid = new Grid(size);
 
 		grid.data.fill(1);

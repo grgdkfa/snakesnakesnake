@@ -10,14 +10,22 @@ function turnLeft() {
 
 class GUI {
     constructor() {
+
+        const hideButtons = (event) => {
+            if(event.key == 'ArrowRight' || event.key == 'ArrowLeft') {
+                this.hideButtons();
+                document.removeEventListener('keydown', hideButtons);
+            }
+        };
+
+        document.addEventListener('keydown', hideButtons);
         
         document.addEventListener('keydown', (event) => {
-			console.log(event);
 			if(event.key == 'ArrowRight') {
-				turnRight();
+                turnRight(); 
 			}
 			if(event.key == 'ArrowLeft') {
-				turnLeft();
+                turnLeft(); 
 			}
         });
         
@@ -27,13 +35,18 @@ class GUI {
         this.buttons.right = document.querySelector(".dir-button.right");
 
         this.buttons.left.addEventListener("mousedown", () => {
-            turnLeft();
-            this.hideButtons();   
+            turnLeft(); 
         });
         this.buttons.right.addEventListener("mousedown", () => {
-            turnRight();
-            this.hideButtons();   
+            turnRight(); 
         });
+
+        this.buttons.left.addEventListener("mousedown", () => {
+            this.hideButtons();
+        }, { once: true });
+        this.buttons.right.addEventListener("mousedown", () => {
+            this.hideButtons();
+        }, { once: true });
     }
 
     hideButtons() {
