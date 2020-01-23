@@ -8,6 +8,14 @@ function turnLeft() {
     bus.emit('snake-turn', -1);
 }
 
+function hide(element) {
+    element.style.display = 'none';
+}
+
+function show(element) {
+    element.style.display = '';
+}
+
 class GUI {
     constructor() {
 
@@ -47,11 +55,27 @@ class GUI {
         this.buttons.right.addEventListener("mousedown", () => {
             this.hideButtons();
         }, { once: true });
+
+        this.gameover = document.querySelector(".gameover-sign");
+        this.gameover.addEventListener('click', () => {
+            bus.emit('start-game');
+        });
+        bus.listen('game-over', () => {
+            this.showGameover();
+        })
     }
 
     hideButtons() {
         this.buttons.left.classList.add('transparent');   
         this.buttons.right.classList.add('transparent');   
+    }
+
+    showGameover() {
+        document.body.classList.add('state-gameover');
+    }
+
+    clear() {
+        document.body.className = '';
     }
 }
 

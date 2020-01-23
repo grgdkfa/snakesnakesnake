@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import Cell from './cell';
 import Grid from './grid';
 import { DIRS, EPS, CELL } from './consts';
-import { randFrom, eq } from './utils';
+import { randFrom, shuffle } from './utils';
 
 class Level {
 	constructor(type) {
@@ -14,8 +14,8 @@ class Level {
 	}
 
 	buildCube(size) {
-		this.size = size;
-		const grid = new Grid(size);
+		this.size = size || this.size;
+		const grid = new Grid(this.size);
 
 		grid.data.fill(1);
 
@@ -28,13 +28,22 @@ class Level {
 
 	spawnFood() {
 		const empty = [];
+		let foodCount = 0;
 		for(let i in this.cells) {
 			const c = this.cells[i];
-			if(c.state == CELL.EMPTY && !c.hasNear(CELL.HEAD))
+			if(c.state == CELL.EMPTY && !c.hasNear(CELL.HEAD)) {
 				empty.push(c);
+			}
+			if(c.state == CELL.FOOD) {
+				foodCount++;
+			}
 		}
-		const cell = randFrom(empty);
-		cell.setState(CELL.FOOD);
+		shuffle(empty);
+		const total = Math.pow(empty.length, 0.3) | 0;
+		for(let i = foodCount; i < total; i++) {
+			const cell = empty.pop();
+			cell.setState(CELL.FOOD);
+		}
 	}
 
 	addCell(x, y, z, d) {
@@ -63,6 +72,11 @@ class Level {
 			if(p < 0) {
 				return DIRS.findIndex( x => x.dot(up) == 0 && x.dot(forward) > EPS );
 			}
+		}
+
+		this.cells = {};
+		for(let i = this.group.children.length; i >= 0; i--) {
+			this.group.remove(this.group.children[i]);
 		}
 
 		grid.forEach((x, y, z, solid) => {

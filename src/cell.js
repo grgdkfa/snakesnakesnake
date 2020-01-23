@@ -5,8 +5,8 @@ import {CELL, DIRS} from './consts';
 const baseGeometry = new THREE.PlaneGeometry(1, 1);
 
 const materials = {
-	EMPTY: new THREE.MeshLambertMaterial({ color: 0xaaaaaa , emissive: 0x333333 }),
-    BODY: new THREE.MeshLambertMaterial({ color: 0x33dd33 }),
+	EMPTY: new THREE.MeshLambertMaterial({ color: 0xaaaaaa, emissive: 0x333333 }),
+    BODY: new THREE.MeshLambertMaterial({ color: 0x33dd33, emissive: 0x003300 }),
     HEAD: new THREE.MeshBasicMaterial({ color: 0xdd3333 }),
     FOOD: new THREE.MeshBasicMaterial({ color: 0xdddd33 })
 };

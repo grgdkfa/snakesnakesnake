@@ -9,6 +9,10 @@ export function randFrom(something) {
     return something[keys[Math.random() * keys.length | 0]];
 }
 
+export function shuffle(array) {
+    array.sort((a, b) => Math.random() - 0.5);
+}
+
 export function eq(a, b) {
     return Math.abs(a - b) < EPS;
 }
