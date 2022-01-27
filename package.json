@@ -24,6 +24,6 @@
   },
   "homepage": "https://github.com/grgdkfa/snakesnakesnake#readme",
   "dependencies": {
-    "three": "^0.111.0"
+    "three": "^0.137.0"
   }
 }
